@@ -1,0 +1,21 @@
+DocuQuery/
+│
+├── app/
+│   ├── __init__.py
+│   ├── ingest.py          # PDF extraction + chunking
+│   ├── embeddings.py      # Load embedding model, embed text
+│   ├── vectorstore.py     # Qdrant connect, upsert, search
+│   ├── retriever.py       # Query embedding + retrieval + reranking
+│   ├── generator.py       # Groq LLM call + prompt building
+│   └── rag_pipeline.py    # Connects everything end to end
+│
+├── ui/
+│   └── streamlit_app.py   # Your entire frontend
+│
+├── eval/
+│   └── evaluate.py        # RAGAs evaluation script
+│
+├── .env                   # API keys (never commit this)
+├── .gitignore             # Must include .env
+├── requirements.txt       # All dependencies
+└── README.md              # Project docs + architecture diagram
