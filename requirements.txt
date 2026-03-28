@@ -1,5 +1,0 @@
-pymupdf
-sentence-transformers
-qdrant-client
-groq
-streamlit
