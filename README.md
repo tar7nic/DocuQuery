@@ -1,7 +1,7 @@
 # DocuQuery ⚡
 > AI-powered PDF question answering using RAG — ask anything from your documents and get precise answers with source citations.
 
-🌐 **Live Demo:** [docuquery.streamlit.app](https://docuquery-tn019.streamlit.app/)
+🌐 **Live Demo:** [DocuQuery](https://docuquery-tn019.streamlit.app/)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.0-red)
