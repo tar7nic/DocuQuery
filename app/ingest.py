@@ -36,11 +36,11 @@ def chunk_text(text: str, page: int, filename: str) -> list[dict]:
         chunk_index += 1
     return chunk_list
 
-def process_pdf(filepath:str) -> list[dict]:
+def process_pdf(filepath: str) -> list[dict]:
     pages = extract_text_from_pdf(filepath)
+    all_chunks = []  
     for page in pages:
-        chunks = chunk_text(page["text"],page["page"], filepath)
-        all_chunks = [] 
+        chunks = chunk_text(page["text"], page["page"], filepath)
         all_chunks.extend(chunks)
     return all_chunks
 
