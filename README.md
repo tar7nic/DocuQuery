@@ -143,4 +143,5 @@ DocuQuery/
 ## 👤 Author
 
 Built by [Tarun](https://github.com/tar7nic) as a portfolio project demonstrating end-to-end RAG engineering.
-```
+
+---
