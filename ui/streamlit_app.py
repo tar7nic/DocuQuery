@@ -98,19 +98,36 @@ with st.sidebar:
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-        if message["role"] == "assistant" and "sources" in message:
+        if message["role"] == "assistant" and "sources" in message and len(message["sources"]) > 0:
             with st.expander(f"📎 {len(message['sources'])} sources cited"):
                 for s in message["sources"]:
-                    st.markdown(f"**{s['filename']}** — Page {s['page']}")
+                    st.markdown(f"**{s['filename']}**")
+                    if str(s['page']).startswith('http'):  # web source
+                        st.markdown(f"🌐 [{s['page']}]({s['page']})")
+                    else:  # PDF source
+                        st.markdown(f"📄 Page {s['page']}")
                     st.caption(s["snippet"])
 
 # Handle new question
 if prompt := st.chat_input("Ask a question about your documents..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    result = ask(prompt, st.session_state.answer_length)
-    st.session_state.messages.append({
-        "role": "assistant",
-        "content": result["answer"],
-        "sources": result["sources"]
-    })
-    st.rerun()
+    
+    if not st.session_state.uploaded_docs:
+        # No PDF uploaded — go straight to web search
+        from app.generator import web_search_answer
+        result = web_search_answer(prompt)
+        st.session_state.messages.append({
+            "role": "assistant",
+            "content": result["answer"],
+            "sources": result["sources"]
+        })
+        st.rerun()
+    
+    else:
+        result = ask(prompt, st.session_state.answer_length)
+        st.session_state.messages.append({
+            "role": "assistant",
+            "content": result["answer"],
+            "sources": result["sources"]
+        })
+        st.rerun()

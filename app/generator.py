@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 import os
 from groq import Groq
+from duckduckgo_search import DDGS
+
 load_dotenv()
 GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
@@ -38,23 +40,46 @@ Answer length instruction: {length_instruction[answer_length]}"""
     )
     
     return {
-    "answer": response.choices[0].message.content,
-    "sources": [
-        {
-            "filename": chunk.payload["filename"],
-            "page": chunk.payload["page"],
-            "snippet": chunk.payload["text"][:200]
-        }
-        for chunk in chunks
-    ]
-}
+        "answer": response.choices[0].message.content,
+        "sources": [
+            {
+                "filename": chunk.payload["filename"],
+                "page": chunk.payload["page"],
+                "snippet": chunk.payload["text"][:200]
+            }
+            for chunk in chunks
+        ]
+    }
     
-if __name__ == "__main__":
-    from retriever import retrieve, rerank
-    query = "what is the job description?"
-    chunks = rerank(query, retrieve(query))
-    result = generate_answer(query, chunks)
-    print(result["answer"])
-    print("\nSources:")
-    for s in result["sources"]:
-        print(f"  - {s['filename']}, Page {s['page']}")
+def web_search_answer(query: str) -> dict:
+    with DDGS() as ddgs:
+        results = list(ddgs.text(query, max_results=4))
+    
+    context = "\n\n".join([
+        f"[{i+1}] {r['title']} ({r['href']}):\n{r['body']}"
+        for i, r in enumerate(results)
+    ])
+    
+    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    response = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[
+            {"role": "system", "content": """Answer the question using the web search results provided. 
+                    Cite sources inline as [1], [2] etc.
+                    Do NOT add a References section at the end — sources will be shown separately."""},
+            {"role": "user", "content": f"Search results:\n{context}\n\nQuestion: {query}"}
+        ],
+        temperature=0.2
+    )
+    
+    return {
+        "answer": response.choices[0].message.content,
+        "sources": [
+            {
+                "filename": r["title"],
+                "page": r["href"],
+                "snippet": r["body"][:200]
+            }
+            for r in results
+        ]
+    }

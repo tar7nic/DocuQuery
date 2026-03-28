@@ -9,12 +9,13 @@ def retrieve(query: str, top_k=10) -> list[dict]:
     results = search(client,query_vector,top_k)
     return results
 
-def rerank(query: str, results: list, top_n=4) -> list[dict]:
-    model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L6-v2')
+def rerank(query: str, results: list, top_n=4) -> tuple:
+    model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
     pairs = [[query, result.payload["text"]] for result in results]
     scores = model.predict(pairs)
     ranked = sorted(zip(results, scores), key=lambda x: x[1], reverse=True)
-    return [result for result, score in ranked[:top_n]]
+    top_score = ranked[0][1] if ranked else 0
+    return [result for result, score in ranked[:top_n]], float(top_score)
     
 if __name__ == "__main__":
     results = retrieve("what is the job description?")
