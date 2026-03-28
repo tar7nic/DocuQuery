@@ -64,12 +64,12 @@ def web_search_answer(query: str) -> dict:
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[
-            {"role": "system", "content": """Answer the question using the web search results provided. 
-                    Cite sources inline as [1], [2] etc.
-                    Do NOT add a References section at the end — sources will be shown separately."""},
-            {"role": "user", "content": f"Search results:\n{context}\n\nQuestion: {query}"}
+        {"role": "system", "content": """Answer the question using the web search results provided.
+        Cite sources inline as [1], [2] etc.
+        Do NOT add a Sources or References section at the end — sources are displayed separately as clickable links."""},
+        {"role": "user", "content": f"Search results:\n{context}\n\nQuestion: {query}"}
         ],
-        temperature=0.2
+temperature=0.2
     )
     
     return {
