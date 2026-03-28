@@ -52,6 +52,17 @@ User Question → Query Embedding → Qdrant Search (Top 10)
 
 ---
 
+## 📊 Evaluation (RAGAs)
+
+Evaluated on 5 questions using the NN.pdf test document.
+
+| Metric | Score | What it means |
+|--------|-------|---------------|
+| Faithfulness | 0.91 | Answers stick to retrieved context |
+| Answer Relevancy | 0.85 | Answers are relevant to the question |
+
+---
+
 ## 🚀 Running Locally
 
 **1. Clone the repo:**
@@ -131,5 +142,5 @@ DocuQuery/
 
 ## 👤 Author
 
-Built by [Tronny](https://github.com/tar7nic) as a portfolio project demonstrating end-to-end RAG engineering.
+Built by [Tarun](https://github.com/tar7nic) as a portfolio project demonstrating end-to-end RAG engineering.
 ```

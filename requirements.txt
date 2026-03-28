@@ -4,3 +4,7 @@ qdrant-client
 groq
 streamlit
 python-dotenv
+ragas
+langchain-groq
+langchain-community
+torch
