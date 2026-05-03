@@ -7,7 +7,7 @@ root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, root)
 from app.rag_pipeline import ingest_pdf, ask
 
-st.set_page_config(page_title="DocuQuery", page_icon="⚡", layout="wide")
+st.set_page_config(page_title="DocuQuery", page_icon="⚡", layout="wide",initial_sidebar_state="expanded")
 
 st.markdown("""
     <style>
@@ -71,7 +71,6 @@ if len(st.session_state.messages) == 0:
 with st.sidebar:
     st.markdown("# ⚡ DocuQuery")
     st.markdown("<p style='color: #8b8fa8; font-size: 13px;'>RAG-powered PDF assistant</p>", unsafe_allow_html=True)
-    st.set_page_config(initial_sidebar_state="expanded")
     st.divider()
     
     uploaded_files = st.file_uploader(
