@@ -11,6 +11,16 @@ st.set_page_config(page_title="DocuQuery", page_icon="⚡", layout="wide",initia
 
 st.markdown("""
     <style>
+    /* Force sidebar open */
+    [data-testid="stSidebarCollapsedControl"] {
+        display: none;
+    }
+    section[data-testid="stSidebar"] {
+        width: 300px !important;
+        transform: translateX(0) !important;
+        min-width: 300px !important;
+        visibility: visible !important;
+    }
     /* Change accent color from red to cyan */
     :root {
         --primary-color: #00b4d8;
