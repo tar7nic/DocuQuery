@@ -7,12 +7,15 @@ import uuid
 
 load_dotenv()
 
-QDRANT_URL = os.getenv('QDRANT_URL')
-QDRANT_API_KEY = os.getenv('QDRANT_API_KEY')
+# QDRANT_URL = os.getenv('QDRANT_URL')
+# QDRANT_API_KEY = os.getenv('QDRANT_API_KEY')
 
 def get_client():
-    client = QdrantClient(url=QDRANT_URL,api_key=QDRANT_API_KEY)
-    return client
+    return QdrantClient(
+        url=os.getenv("QDRANT_URL"),
+        api_key=os.getenv("QDRANT_API_KEY"),
+        check_compatibility=False
+    )
 
 def create_collection(client):
     existing = [c.name for c in client.get_collections().collections]
@@ -50,3 +53,4 @@ if __name__ == "__main__":
     client = get_client()
     create_collection(client)
     print("Connected and collection created!")
+    
